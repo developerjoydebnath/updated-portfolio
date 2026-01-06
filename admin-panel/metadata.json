@@ -1,0 +1,7 @@
+{
+  "name": "Joy Portfolio CMS",
+  "description": "A comprehensive administrative dashboard and content management system for managing portfolio content, projects, skills, and client inquiries.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
