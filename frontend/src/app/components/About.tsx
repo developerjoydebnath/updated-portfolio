@@ -47,20 +47,7 @@ export default function About({ stats, hero, aboutMe, contact }: AboutProps) {
     { _id: '3', icon: 'Star', value: '5★', label: 'Average Rating' },
     { _id: '4', icon: 'Zap', value: '3+', label: 'Years Experience' },
   ];
-
-  const getResumeDownloadUrl = (url?: string) => {
-  if (!url) return '#';
-
-  if (url.includes('cloudinary.com') && url.includes('/raw/upload/')) {
-    return url.replace(
-      '/raw/upload/',
-      '/raw/upload/fl_attachment:Joy_Debnath_CV.pdf/'
-    );
-  }
-
-  return url;
-};
-
+  
 
   return (
     <div className="flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 sm:py-14 md:py-16 lg:py-20">
@@ -193,7 +180,8 @@ export default function About({ stats, hero, aboutMe, contact }: AboutProps) {
               className='flex lg:justify-start justify-center'
             >
               <a 
-                href={getResumeDownloadUrl(hero?.resumeUrl?.startsWith('http') ? hero.resumeUrl : import.meta.env.VITE_API_URL + hero?.resumeUrl)} 
+                href={hero?.resumeUrl?.startsWith('http') ? hero.resumeUrl : import.meta.env.VITE_API_URL + hero?.resumeUrl} 
+                target="_blank" 
                 rel="noopener noreferrer"
               >
                 <GradientButton className="flex cursor-pointer items-center gap-2 px-8 py-3 rounded-full">
