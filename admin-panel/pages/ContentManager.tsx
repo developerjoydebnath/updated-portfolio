@@ -45,7 +45,15 @@ const ContentManager: React.FC<ContentManagerProps> = ({ data, onUpdate }) => {
 
     const promise = async () => {
       const formData = new FormData();
-      formData.append('hero', JSON.stringify(hero));
+      
+      // Create a clean copy of hero data without base64 images
+      const heroData = { ...hero };
+      if (selectedProfileFile) {
+        // If uploading a new file, don't send the base64 string in JSON
+        heroData.profileImage = ''; 
+      }
+      formData.append('hero', JSON.stringify(heroData));
+      
       formData.append('aboutMe', aboutMe);
       formData.append('proficientIn', JSON.stringify(proficientIn));
       formData.append('socialLinks', JSON.stringify(socialLinks));

@@ -28,9 +28,7 @@ export const getContent = async () => {
 
 export const updateContent = async (data: any) => {
   const isFormData = data instanceof FormData;
-  const response = await api.put('/content', data, {
-    headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : undefined,
-  });
+  const response = await api.put('/content', data);
   return response.data;
 };
 
@@ -62,20 +60,12 @@ export const getProjects = async () => {
 };
 
 export const addProject = async (formData: FormData) => {
-  const response = await api.post('/projects', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const response = await api.post('/projects', formData);
   return response.data;
 };
 
 export const updateProject = async (id: string, formData: FormData) => {
-  const response = await api.put(`/projects/${id}`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const response = await api.put(`/projects/${id}`, formData);
   return response.data;
 };
 
@@ -149,20 +139,12 @@ export const getTestimonials = async () => {
 };
 
 export const addTestimonial = async (formData: FormData) => {
-  const response = await api.post('/testimonials', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const response = await api.post('/testimonials', formData);
   return response.data;
 };
 
 export const updateTestimonial = async (id: string, formData: FormData) => {
-  const response = await api.put(`/testimonials/${id}`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const response = await api.put(`/testimonials/${id}`, formData);
   return response.data;
 };
 
