@@ -137,8 +137,9 @@ export default function Contact({ socialLinks, contact }: ContactProps) {
                       href={info.href}
                       className="flex items-center gap-4 p-4 group"
                     >
-                      <div className="p-3 bg-emerald-500/10 rounded-lg text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
-                        <info.icon size={24} />
+                      <div className="relative p-3 rounded-lg overflow-hidden text-emerald-400 group-hover:text-white transition-colors duration-300">
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-cyan-500 opacity-10 group-hover:opacity-100 transition-opacity duration-300" />
+                        <info.icon size={24} className="relative z-10" />
                       </div>
                       <div>
                         <p className="text-sm text-gray-400 mb-1">{info.title}</p>

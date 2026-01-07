@@ -61,8 +61,8 @@ const QueriesManager: React.FC<QueriesManagerProps> = ({ data, onUpdate }) => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-hidden flex gap-6 pb-6">
-        <div className="w-1/3 bg-[#0a0a1a] rounded-2xl border border-gray-800 flex flex-col overflow-hidden">
+      <div className="flex-1 overflow-hidden sm:flex gap-6 pb-6">
+        <div className="sm:w-1/3 sm:mb-0 mb-4 bg-[#0a0a1a] rounded-2xl border border-gray-800 flex flex-col overflow-hidden">
           <div className="p-4 border-b border-gray-800 bg-gray-900/30 font-semibold text-sm text-gray-400">
             {filteredQueries.length} Messages
           </div>
@@ -93,7 +93,7 @@ const QueriesManager: React.FC<QueriesManagerProps> = ({ data, onUpdate }) => {
           </div>
         </div>
 
-        <div className="flex-1 bg-[#0a0a1a] rounded-2xl border border-gray-800 flex flex-col overflow-hidden">
+        <div className="flex-1 bg-[#0a0a1a] py-4 rounded-2xl border border-gray-800 flex flex-col overflow-hidden">
           {selectedQuery ? (
             <>
               <div className="p-6 border-b border-gray-800 bg-gray-900/30 flex justify-between items-center">

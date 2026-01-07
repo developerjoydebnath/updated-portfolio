@@ -103,14 +103,14 @@ export default function Hero({ data, socialLinks }: HeroProps) {
           >
             <GradientButton
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-              className="w-auto sm:px-8 px-6 sm:py-4 text-sm sm:text-base py-3 rounded-full"
+              className="w-auto sm:px-8 px-6 sm:py-4 text-sm sm:text-base py-3 rounded-full cursor-pointer"
             >
               View My Work
             </GradientButton>
             <GradientButton
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               variant="secondary"
-              className="w-auto sm:px-8 px-6 sm:py-4 text-sm sm:text-base py-3 rounded-full"
+              className="w-auto sm:px-8 px-6 sm:py-4 text-sm sm:text-base py-3 rounded-full cursor-pointer"
             >
               Get In Touch
             </GradientButton>
@@ -146,7 +146,7 @@ export default function Hero({ data, socialLinks }: HeroProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-8 left-1/2 cursor-pointer -translate-x-1/2"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}

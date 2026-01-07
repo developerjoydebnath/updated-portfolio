@@ -116,7 +116,7 @@ export default function Projects({ data }: ProjectsProps) {
             <button
               key={index}
               onClick={() => setFilter(category.id)}
-              className={`px-6 py-2 rounded-full font-medium transition-all ${
+              className={`px-6 py-2 rounded-full font-medium transition-all cursor-pointer ${
                 filter === category.id
                   ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white shadow-lg shadow-emerald-500/30'
                   : 'bg-white/5 border border-white/10 hover:bg-white/10'

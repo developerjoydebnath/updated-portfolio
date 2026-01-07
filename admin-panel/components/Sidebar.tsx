@@ -1,18 +1,18 @@
 
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  FileEdit, 
-  Briefcase, 
-  Code2, 
-  Layers, 
-  MessageSquare, 
+import {
+  Briefcase,
+  Code2,
+  FileEdit,
   GraduationCap,
-  Sparkles,
+  Layers,
+  LayoutDashboard,
+  MessageSquare,
   Quote,
+  Sparkles,
   X
 } from 'lucide-react';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 interface SidebarProps {
   queriesCount: number;

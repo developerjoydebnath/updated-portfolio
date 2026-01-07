@@ -105,7 +105,11 @@ const TestimonialsManager: React.FC<TestimonialsManagerProps> = ({ data, onUpdat
           <div key={t._id} className="bg-[#0a0a1a] p-8 rounded-3xl border border-gray-800 hover:border-gray-700 transition-all group flex flex-col h-full">
             <div className="flex justify-between items-start mb-6">
               <div className="flex items-center gap-4">
-                <img src={t.avatar ? import.meta.env.VITE_API_URL + t.avatar : `https://ui-avatars.com/api/?name=${t.name}&background=random`} alt={t.name} className="w-14 h-14 rounded-2xl object-cover border-2 border-cyan-500/20" />
+                <img 
+                  src={t.avatar ? (t.avatar.startsWith('http') ? t.avatar : `${import.meta.env.VITE_API_URL}${t.avatar}`) : `https://ui-avatars.com/api/?name=${t.name}&background=random`} 
+                  alt={t.name} 
+                  className="w-14 h-14 rounded-2xl object-cover border-2 border-cyan-500/20" 
+                />
                 <div>
                   <h3 className="font-bold text-white">{t.name}</h3>
                   <p className="text-xs text-cyan-400 font-medium">{t.role} {t.company ? `@ ${t.company}` : ''}</p>

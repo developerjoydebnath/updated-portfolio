@@ -1,12 +1,13 @@
 
 import {
-    ArrowUpRight,
-    Briefcase,
-    MessageCircle,
-    TrendingUp,
-    Users
+  ArrowUpRight,
+  Briefcase,
+  MessageCircle,
+  TrendingUp,
+  Users
 } from 'lucide-react';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { AppState } from '../types';
 
 interface DashboardProps {
@@ -64,7 +65,9 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         <div className="lg:col-span-2 bg-[#0a0a1a] rounded-2xl border border-gray-800 overflow-hidden">
           <div className="p-6 border-b border-gray-800 flex justify-between items-center">
             <h2 className="font-bold text-lg">Recent Queries</h2>
-            <button className="text-xs text-cyan-400 font-bold uppercase tracking-wider">View All</button>
+            <Link to="/queries">
+              <button className="text-xs text-cyan-400 font-bold uppercase tracking-wider">View All</button>
+            </Link>
           </div>
           <div className="divide-y divide-gray-800">
             {data.queries.length > 0 ? (

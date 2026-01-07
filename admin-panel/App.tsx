@@ -11,6 +11,7 @@ import {
     getSkills,
     getTestimonials
 } from './api';
+import Loader from './components/Loader';
 import Sidebar from './components/Sidebar';
 import { INITIAL_DATA } from './constants';
 import ContentManager from './pages/ContentManager';
@@ -27,11 +28,14 @@ import { AppState } from './types';
 const App: React.FC = () => {
   const [data, setData] = useState<AppState>(INITIAL_DATA);
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('admin_token'));
+  const [loading, setLoading] = useState(!!localStorage.getItem('admin_token'));
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleLogin = (token: string) => {
     localStorage.setItem('admin_token', token);
     setIsAuthenticated(true);
+    // Trigger data fetch on login
+    setLoading(true);
   };
 
   const handleLogout = () => {
@@ -41,8 +45,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!isAuthenticated) return;
+      
       try {
-
         const [
           testimonials, 
           content, 
@@ -77,10 +82,17 @@ const App: React.FC = () => {
         });
       } catch (error) {
         console.error('Failed to fetch data:', error);
+        // If fetch fails (e.g. invalid token), maybe logout?
+        if ((error as any)?.response?.status === 401) {
+             handleLogout();
+        }
+      } finally {
+        setLoading(false);
       }
     };
+    
     fetchData();
-  }, []);
+  }, [isAuthenticated]);
 
   const updateData = (newData: Partial<AppState>) => {
     setData(prev => ({ ...prev, ...newData }));
@@ -88,6 +100,10 @@ const App: React.FC = () => {
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const closeSidebar = () => setIsSidebarOpen(false);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   if (!isAuthenticated) {
     return <Login onLogin={handleLogin} />;

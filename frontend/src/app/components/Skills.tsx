@@ -310,7 +310,7 @@ export default function Skills({ data, proficientIn }: SkillsProps) {
             <button
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
-              className={`relative px-6 py-2 rounded-full font-medium transition-all overflow-hidden group ${
+              className={`relative px-6 py-2 cursor-pointer rounded-full font-medium transition-all overflow-hidden group ${
                 activeCategory === category.id
                   ? 'text-white'
                   : 'text-gray-400 hover:text-white'
@@ -424,7 +424,6 @@ export default function Skills({ data, proficientIn }: SkillsProps) {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
           className="mt-16"
         >
           <h3 className="text-center text-xl font-bold mb-6 text-gray-300">Also proficient in</h3>
@@ -436,8 +435,7 @@ export default function Skills({ data, proficientIn }: SkillsProps) {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.5 + index * 0.05 }}
-                whileHover={{ scale: 1.1, y: -5 }}
-                className="relative group"
+                className="relative cursor-pointer group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full blur opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative px-5 py-2 bg-white/5 border border-white/10 rounded-full hover:border-emerald-500/50 transition-all">
