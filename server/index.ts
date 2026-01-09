@@ -23,16 +23,34 @@ dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);
+
+// Improved CORS for Socket.io and Express
+const rawOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
+const allowedOrigins2 = rawOrigins.map(o => o.trim().replace(/\/$/, ""));
+
 const io = new Server(httpServer, {
-  path: '/socket.io',
+  path: '/socket.io/',
+  addTrailingSlash: true,
   cors: {
-    origin: process.env.NODE_ENV === 'development' ? '*' : (process.env.ALLOWED_ORIGINS?.split(',') || []),
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins2.includes(origin.replace(/\/$/, "")) || process.env.NODE_ENV === 'development') {
+        callback(null, true);
+      } else {
+        callback(null, false); // Fail silently or log
+      }
+    },
     methods: ['GET', 'POST'],
     credentials: true,
   },
+  transports: ['polling', 'websocket']
 });
 
 app.set('io', io);
+
+// Critical fix for Vercel: Handle Socket.io at the Express route level
+app.all('/socket.io/*', (req, res) => {
+  (io.engine as any).handleRequest(req, res);
+});
 
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
