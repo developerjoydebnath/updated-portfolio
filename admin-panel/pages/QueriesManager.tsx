@@ -27,8 +27,14 @@ const QueriesManager: React.FC<QueriesManagerProps> = ({ data, onUpdate }) => {
       onUpdate({
         queries: data.queries.map(q => q._id === id ? { ...q, status } : q)
       });
+      if (status === 'replied') {
+        toast.success('Query marked as replied');
+      } else if (status === 'read') {
+        toast.info('Query marked as read');
+      }
     } catch (error) {
       console.error('Failed to update query status:', error);
+      toast.error('Failed to update query status');
     }
   };
 
