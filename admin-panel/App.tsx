@@ -120,8 +120,25 @@ const App: React.FC = () => {
     }
 
     // Pusher Initialization
-    const pusher = new Pusher(import.meta.env.VITE_PUSHER_KEY, {
-      cluster: import.meta.env.VITE_PUSHER_CLUSTER,
+    const pusherKey = import.meta.env.VITE_PUSHER_KEY;
+    const pusherCluster = import.meta.env.VITE_PUSHER_CLUSTER;
+
+    if (!pusherKey || !pusherCluster) {
+      console.warn('Pusher keys are missing. Real-time updates disabled.');
+      return;
+    }
+
+    const pusher = new Pusher(pusherKey, {
+      cluster: pusherCluster,
+      forceTLS: true
+    });
+
+    pusher.connection.bind('state_change', (states: any) => {
+      console.log('Pusher connection state:', states.current);
+    });
+
+    pusher.connection.bind('error', (err: any) => {
+      console.error('Pusher connection error:', err);
     });
 
     const channel = pusher.subscribe('portfolio-queries');
