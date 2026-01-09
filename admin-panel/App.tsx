@@ -121,7 +121,8 @@ const App: React.FC = () => {
 
     const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
       withCredentials: true,
-      transports: ['polling', 'websocket'], // Try polling first for compatibility
+      transports: ['websocket'], // Try polling first for compatibility
+      upgrade: false
     });
 
     socket.on('connect', () => {
