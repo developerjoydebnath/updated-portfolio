@@ -3,10 +3,8 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import { createServer } from 'http';
 import mongoose from 'mongoose';
 import multer from 'multer';
-import { Server } from 'socket.io';
 import swaggerUi from 'swagger-ui-express';
 import analyticsRoutes from './routes/analytics';
 import authRoutes from './routes/auth';
@@ -22,43 +20,6 @@ import { specs } from './swagger';
 dotenv.config();
 
 const app = express();
-const httpServer = createServer(app);
-
-// Improved CORS for Socket.io and Express
-const rawOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
-const allowedOrigins2 = rawOrigins.map(o => o.trim().replace(/\/$/, ""));
-
-const io = new Server(httpServer, {
-  path: '/socket.io/',
-  addTrailingSlash: true,
-  cors: {
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins2.includes(origin.replace(/\/$/, "")) || process.env.NODE_ENV === 'development') {
-        callback(null, true);
-      } else {
-        callback(null, false); // Fail silently or log
-      }
-    },
-    methods: ['GET', 'POST'],
-    credentials: true,
-  },
-  transports: ['polling', 'websocket']
-});
-
-app.set('io', io);
-
-// Critical fix for Vercel: Handle Socket.io at the Express route level
-app.all('/socket.io/*', (req, res) => {
-  (io.engine as any).handleRequest(req, res);
-});
-
-io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
-  socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
-  });
-});
-
 const PORT = process.env.PORT || 5000;
 
 // CORS Configuration
@@ -149,7 +110,7 @@ async function connectToMongoDB() {
     console.log('✅ Connected to MongoDB');
     
     // Start server only after successful DB connection
-    httpServer.listen(PORT, () => {
+    app.listen(PORT, () => {
       console.log(`🚀 Server is running on port ${PORT}`);
       console.log(`📚 Swagger docs available at: http://localhost:${PORT}/api-docs`);
       console.log(`🏥 Health check at: http://localhost:${PORT}/health`);

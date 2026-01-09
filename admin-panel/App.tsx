@@ -1,7 +1,7 @@
 import { Menu, X } from 'lucide-react';
+import Pusher from 'pusher-js';
 import React, { useEffect, useState } from 'react';
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { io } from 'socket.io-client';
 import { toast, Toaster } from 'sonner';
 import {
   getContent,
@@ -119,17 +119,14 @@ const App: React.FC = () => {
       Notification.requestPermission();
     }
 
-    const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
-      withCredentials: true,
-      transports: ['websocket'], // Try polling first for compatibility
-      upgrade: false
+    // Pusher Initialization
+    const pusher = new Pusher(import.meta.env.VITE_PUSHER_KEY, {
+      cluster: import.meta.env.VITE_PUSHER_CLUSTER,
     });
 
-    socket.on('connect', () => {
-      console.log('Connected to socket server');
-    });
-
-    socket.on('new_query', (query) => {
+    const channel = pusher.subscribe('portfolio-queries');
+    
+    channel.bind('new-query', (query: any) => {
       setData(prev => ({
         ...prev,
         queries: [query, ...prev.queries]
@@ -143,7 +140,7 @@ const App: React.FC = () => {
       if ("Notification" in window && Notification.permission === "granted") {
         new Notification("New Query Received", {
           body: `From: ${query.name}\nSubject: ${query.subject}`,
-          icon: "/favicon.ico", // Change this to your logo path
+          icon: "/favicon.ico",
           tag: "new-query",
           requireInteraction: true,
           silent: false
@@ -155,8 +152,7 @@ const App: React.FC = () => {
         action: {
           label: 'View',
           onClick: () => {
-            // Maybe navigate to queries page? 
-            // For now just closing is fine or user can click it
+             // Navigation logic if needed
           },
         },
       });
@@ -165,7 +161,8 @@ const App: React.FC = () => {
     return () => {
       window.removeEventListener('click', unlockAudio);
       window.removeEventListener('keydown', unlockAudio);
-      socket.disconnect();
+      pusher.unsubscribe('portfolio-queries');
+      pusher.disconnect();
     };
   }, [isAuthenticated]);
 

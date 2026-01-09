@@ -1,6 +1,7 @@
 import express from 'express';
 import { Query } from '../models/Query';
 import { sendContactEmail, sendReplyEmail } from '../utils/mailer';
+import { pusher } from '../utils/pusher';
 
 const router = express.Router();
 
@@ -56,10 +57,11 @@ router.post('/', async (req, res) => {
     const query = new Query(req.body);
     await query.save();
 
-    // Emit live notification
-    const io = req.app.get('io');
-    if (io) {
-      io.emit('new_query', query);
+    // Trigger Pusher notification
+    try {
+      await pusher.trigger('portfolio-queries', 'new-query', query);
+    } catch (pusherError) {
+      console.error('Pusher trigger failed:', pusherError);
     }
 
     // Send email notification
