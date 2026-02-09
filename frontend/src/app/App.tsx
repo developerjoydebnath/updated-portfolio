@@ -66,11 +66,16 @@ export default function App() {
     fetchData();
 
     recordVisit(window.location.pathname);
+  }, []);
 
+  useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
     if (loading) return;
 
     const observer = new IntersectionObserver(
@@ -102,8 +107,8 @@ export default function App() {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-slate-950 z-50">
         <div className="relative flex items-center justify-center">
-          <div className="absolute hidden md:block animate-ping h-32 w-32 rounded-full bg-cyan-500/50 opacity-75"></div>
-          <div className="absolute hidden md:block animate-pulse h-32 w-32 rounded-full bg-cyan-500/30"></div>
+          <div className="absolute animate-ping h-32 w-32 rounded-full bg-cyan-500/50 opacity-75"></div>
+          <div className="absolute animate-pulse h-32 w-32 rounded-full bg-cyan-500/30"></div>
           <img
             src="/loader-image.png"
             alt="Loading..."
