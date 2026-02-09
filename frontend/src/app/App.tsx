@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import {
-    getContent,
-    getExperience,
-    getProjects,
-    getServices,
-    getSkills,
-    getTestimonials,
-    recordVisit
+  getContent,
+  getExperience,
+  getProjects,
+  getServices,
+  getSkills,
+  getTestimonials,
+  recordVisit
 } from '../api';
 import About from './components/About';
 import Contact from './components/Contact';
@@ -16,7 +16,6 @@ import Navigation from './components/Navigation';
 import Projects from './components/Projects';
 import Services from './components/Services';
 import Skills from './components/Skills';
-import SmoothScroll from './components/SmoothScroll';
 import Testimonials from './components/Testimonials';
 
 export default function App() {
@@ -45,7 +44,7 @@ export default function App() {
         getProjects(),
         getTestimonials()
       ]);
-      
+
       if (content) {
         setHeroData(content.hero);
         setAboutMeData(content.aboutMe);
@@ -63,28 +62,37 @@ export default function App() {
       setLoading(false);
     };
     fetchData();
-    
+
     recordVisit(window.location.pathname);
-
-    const handleScroll = () => {
-      const sections = ['home', 'about', 'services', 'skills', 'experience', 'projects', 'testimonials', 'contact'];
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (loading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        threshold: 0.2, // Trigger when 20% of the section is visible
+        rootMargin: '-20% 0px -20% 0px' // Offset to trigger closer to center
+      }
+    );
+
+    const sections = ['home', 'about', 'services', 'skills', 'experience', 'projects', 'testimonials', 'contact'];
+    sections.forEach((section) => {
+      const element = document.getElementById(section);
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, [loading]);
 
   if (loading) {
     return (
@@ -92,9 +100,9 @@ export default function App() {
         <div className="relative flex items-center justify-center">
           <div className="absolute animate-ping h-32 w-32 rounded-full bg-cyan-500/50 opacity-75"></div>
           <div className="absolute animate-pulse h-32 w-32 rounded-full bg-cyan-500/30"></div>
-          <img 
-            src="/loader-image.png" 
-            alt="Loading..." 
+          <img
+            src="/loader-image.png"
+            alt="Loading..."
             className="relative h-28 w-28 rounded-full object-cover border-4 border-slate-900 shadow-2xl shadow-cyan-500/20"
           />
         </div>
@@ -106,7 +114,7 @@ export default function App() {
     <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden">
       {/* Grid Background */}
       <div className="fixed inset-0 pointer-events-none">
-        <div 
+        <div
           className="absolute inset-0 opacity-35"
           style={{
             backgroundImage: `
@@ -119,7 +127,7 @@ export default function App() {
       </div>
 
       {/* Animated Gradient Blobs */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none overflow-hidden hidden md:block">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/30 rounded-full blur-[120px] animate-blob" />
         <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-cyan-500/30 rounded-full blur-[120px] animate-blob animation-delay-2000" />
         <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-blue-500/30 rounded-full blur-[120px] animate-blob animation-delay-4000" />
@@ -128,7 +136,6 @@ export default function App() {
       {/* Navigation */}
       <Navigation activeSection={activeSection} />
 
-      <SmoothScroll>
       {/* Content */}
       <main className="relative">
         <section id="home">
@@ -164,7 +171,6 @@ export default function App() {
           <p>Designed with <span className="text-red-500">❤️</span> by JOY</p>
         </div>
       </footer>
-      </SmoothScroll>
     </div>
   );
 }
